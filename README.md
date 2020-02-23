@@ -11,4 +11,4 @@
 |blackbox-exporter|外形監視をおこなう            |
 |node-exporter    |サーバリソースの収集をおこなう|
 |grafana          |メトリクスの可視化をおこなう  |
-|mailcatcher      |テスト様のSMTPサーバ          |
+|mailcatcher      |テスト用のSMTPサーバ          |
