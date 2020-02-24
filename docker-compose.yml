@@ -10,6 +10,9 @@ volumes:
   grafana_data:
     driver: local
 
+  loki_data:
+    driver: local
+
 services:
   prometheus:
     image: prom/prometheus
@@ -72,6 +75,8 @@ services:
   loki:
     image: grafana/loki
     container_name: loki
+    volumes:
+      - loki_data:/tmp/loki
     ports:
       - 3100:3100
     restart: always
