@@ -9,9 +9,27 @@ clients:
   - url: http://loki:3100/loki/api/v1/push
 
 scrape_configs:
-  - job_name: 'flog-log'
-    static_configs:
-      - targets:
-        - localhost
-        labels:
-          __path__: /var/log/flog.log
+- job_name: 'flog-log'
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      __path__: /var/log/flog.log
+  pipeline_stages:
+    - regex:
+        expression: '^(?P<addr>\S+)\s+\S+\s+\S+\s+\[(?P<time>.*?)\]\s+"(?P<method>\S+)\s+(?P<path>\S+)\s+\S+"\s+(?P<status>\S+)\s+'
+    - labels:
+        addr:
+        method:
+        path:
+        status:
+    - timestamp:
+        format: RFC3399Nano
+        source: time
+    - metrics:
+        log_lines_total:
+          type: Counter
+          description: total number of log lines
+          source: time
+          config:
+            action: inc
