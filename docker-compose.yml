@@ -46,7 +46,7 @@ services:
       - /sys:/host/sys:ro
     ports:
       - 9100:9100
-    restart: always
+    restart: unless-stopped
 
   cadvisor:
     image: google/cadvisor
@@ -58,7 +58,7 @@ services:
       - /var/lib/docker:/var/lib/docker:ro
     ports:
     - 18080:8080
-    restart: always
+    restart: unless-stopped
 
   grafana:
     image: grafana/grafana
@@ -67,6 +67,32 @@ services:
       - grafana_data:/var/lib/grafana
     ports:
       - 3000:3000
+    restart: unless-stopped
+
+  loki:
+    image: grafana/loki
+    container_name: loki
+    ports:
+      - 3100:3100
+    restart: always
+
+  promtail:
+    image: grafana/promtail
+    container_name: promtail
+    ports:
+      - 9080:9080
+    command: -config.file=/etc/promtail/flog-config.yml
+    volumes:
+      - ./log:/var/log
+      - ./promtail/flog-config.yml:/etc/promtail/flog-config.yml
+    restart: unless-stopped
+
+  flog-logger:
+    image: mingrammer/flog
+    container_name: flog_logger
+    command: -n 5 -d 5 -t log -w -o /var/log/flog.log -l
+    volumes:
+      - ./log:/var/log
     restart: unless-stopped
 
   mail:

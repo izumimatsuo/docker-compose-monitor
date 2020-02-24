@@ -11,4 +11,7 @@
 |blackbox-exporter|外形監視をおこなう            |
 |node-exporter    |サーバリソースの収集をおこなう|
 |grafana          |メトリクスの可視化をおこなう  |
+|grafana loki     |ログの収集をおこなう          |
+|promtail         |ログの転送をおこなう          |
+|flog-logger      |テスト用のlogger              |
 |mailcatcher      |テスト用のSMTPサーバ          |
